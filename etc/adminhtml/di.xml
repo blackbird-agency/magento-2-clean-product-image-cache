@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Blackbird\CleanProductImageCache\Model\Service\CleanCacheStrategyPool">
+        <arguments>
+            <argument name="cleanCacheStrategies" xsi:type="array">
+                <item name="clean_magento" xsi:type="array">
+                    <item name="class" xsi:type="object">Blackbird\CleanProductImageCache\Model\Service\CleanMagentoCacheStrategy</item>
+                    <item name="sortOrder" xsi:type="number">10</item>
+                    <item name="enabled" xsi:type="boolean">true</item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+</config>
