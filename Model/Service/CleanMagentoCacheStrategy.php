@@ -5,6 +5,7 @@ namespace Blackbird\CleanProductImageCache\Model\Service;
 
 use Blackbird\CleanProductImageCache\Api\CleanCacheStrategyInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product\Gallery\ReadHandler as MediaGalleryReadHandler;
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Event\ManagerInterface as EventManagerInterface;
 use Magento\Framework\Exception\FileSystemException;
@@ -38,6 +39,8 @@ class CleanMagentoCacheStrategy implements CleanCacheStrategyInterface
      */
     protected EventManagerInterface $eventManager;
 
+    protected MediaGalleryReadHandler $mediaGalleryReadHandler;
+
     /**
      * @param \Magento\Framework\App\Filesystem\DirectoryList $directoryList
      * @param \Magento\Framework\Filesystem\Driver\File $file
@@ -47,12 +50,14 @@ class CleanMagentoCacheStrategy implements CleanCacheStrategyInterface
         DirectoryList $directoryList,
         File $file,
         LoggerInterface $logger,
-        EventManagerInterface $eventManager
+        EventManagerInterface $eventManager,
+        MediaGalleryReadHandler $mediaGalleryReadHandler
     ) {
         $this->directoryList = $directoryList;
         $this->file = $file;
         $this->logger = $logger;
         $this->eventManager = $eventManager;
+        $this->mediaGalleryReadHandler = $mediaGalleryReadHandler;
     }
 
     /**
@@ -60,6 +65,7 @@ class CleanMagentoCacheStrategy implements CleanCacheStrategyInterface
      */
     public function clean(ProductInterface $product): void
     {
+        $product = $this->mediaGalleryReadHandler->execute($product);
         $productMedia = $product->getMediaGalleryImages()->getColumnValues('file');
         $mediaPath = $this->directoryList->getPath(DirectoryList::MEDIA);
         $productImagePath = $mediaPath . '/catalog/product/cache/';

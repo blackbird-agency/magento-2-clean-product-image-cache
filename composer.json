@@ -1,6 +1,6 @@
 {
   "name": "blackbird/magento-2-clean-product-image-cache",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Clean product images cache file in Magento 2. Usefull if image name doesn't change",
   "type": "magento2-module",
   "authors": [
