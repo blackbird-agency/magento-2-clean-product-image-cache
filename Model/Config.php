@@ -14,6 +14,7 @@ use Magento\Store\Model\ScopeInterface;
 class Config
 {
     public const CONFIG_PATH_CLEAN_IMAGE_CACHE_ENABLE = 'blackbird_clean_image_cache/general/enable';
+    public const CONFIG_PATH_CLEAN_IMAGE_CACHE_AREAS = 'blackbird_clean_image_cache/general/areas';
 
     /**
      * @var \Magento\Framework\App\Config\ScopeConfigInterface
@@ -40,5 +41,14 @@ class Config
             ScopeInterface::SCOPE_STORE,
             $storeId
         );
+    }
+
+    public function getAreas($storeId = null): array
+    {
+        return \explode(',', $this->scopeConfig->getValue(
+            self::CONFIG_PATH_CLEAN_IMAGE_CACHE_AREAS,
+            ScopeInterface::SCOPE_STORE,
+            $storeId
+        ) ?: '');
     }
 }

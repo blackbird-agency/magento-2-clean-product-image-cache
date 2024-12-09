@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Blackbird\CleanProductImageCache\Observer;
 
+use Blackbird\CleanProductImageCache\Model\Config;
 use Blackbird\CleanProductImageCache\Model\Config as CleanProductImageCacheConfig;
 use Blackbird\CleanProductImageCache\Model\Service\CleanCacheStrategyPool;
+use Magento\Framework\App\State;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 
@@ -23,18 +25,25 @@ class CatalogProductSaveAfter implements ObserverInterface
     /**
      * @var \Blackbird\CleanProductImageCache\Model\Config
      */
-    protected CleanProductImageCacheConfig $CleanProductImageCacheConfig;
+    protected CleanProductImageCacheConfig $cleanProductImageCacheConfig;
+
+    /**
+     * @var \Magento\Framework\App\State
+     */
+    protected State $state;
 
     /**
      * @param \Blackbird\CleanProductImageCache\Model\Service\CleanCacheStrategyPool $cacheStrategyPool
-     * @param \Blackbird\CleanProductImageCache\Model\Config $CleanProductImageCacheConfig
+     * @param \Blackbird\CleanProductImageCache\Model\Config $cleanProductImageCacheConfig
      */
     public function __construct(
         CleanCacheStrategyPool $cacheStrategyPool,
-        CleanProductImageCacheConfig $CleanProductImageCacheConfig
+        CleanProductImageCacheConfig $cleanProductImageCacheConfig,
+        State $state
     ) {
         $this->cacheStrategyPool = $cacheStrategyPool;
-        $this->CleanProductImageCacheConfig = $CleanProductImageCacheConfig;
+        $this->cleanProductImageCacheConfig = $cleanProductImageCacheConfig;
+        $this->state = $state;
     }
 
     /**
@@ -45,7 +54,7 @@ class CatalogProductSaveAfter implements ObserverInterface
      */
     public function execute(Observer $observer): void
     {
-        if ($this->CleanProductImageCacheConfig->isEnable()) {
+        if ($this->canExecute()) {
             $product = $observer->getProduct();
 
             /** @var \Blackbird\CleanProductImageCache\Api\CleanCacheStrategyInterface $strategy */
@@ -53,5 +62,14 @@ class CatalogProductSaveAfter implements ObserverInterface
                 $strategy->clean($product);
             }
         }
+    }
+
+    protected function canExecute()
+    {
+        $area = $this->state->getAreaCode();
+        $allowedAreas = $this->cleanProductImageCacheConfig->getAreas();
+
+        return $this->cleanProductImageCacheConfig->isEnable()
+            && \in_array($area, $allowedAreas, true);
     }
 }

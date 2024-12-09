@@ -15,6 +15,12 @@
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <config_path>blackbird_clean_image_cache/general/enable</config_path>
                 </field>
+                <field id="areas" type="multiselect" translate="label" sortOrder="20"  showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Areas</label>
+                    <source_model>Blackbird\CleanProductImageCache\Model\Config\Source\AppArea</source_model>
+                    <comment>Define on which product save area you want to clean image cache</comment>
+                    <config_path>blackbird_clean_image_cache/general/areas</config_path>
+                </field>
             </group>
         </section>
     </system>

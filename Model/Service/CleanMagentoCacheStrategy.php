@@ -76,8 +76,8 @@ class CleanMagentoCacheStrategy implements CleanCacheStrategyInterface
 
             foreach (Glob::glob($pattern) as $filename) {
                 try {
-                    $this->file->deleteFile($filename);
                     $paths[] = $filename;
+                    $this->file->deleteFile($filename);
                 } catch (FileSystemException $e) {
                     $this->logger->warning(\sprintf('Cannot delete image cache for product %s : %s',
                         $product->getId(),
