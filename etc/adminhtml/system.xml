@@ -5,7 +5,7 @@
         <section id="blackbird_clean_image_cache" translate="label" sortOrder="130" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>
             <label>Clean Image Cache</label>
-            <tab>blackbird</tab>
+            <tab>blackbird_extensions</tab>
             <resource>Blackbird_UrlRewrite::config</resource>
             <group id="general" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
                 <label>General</label>
