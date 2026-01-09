@@ -87,7 +87,7 @@ class CleanMagentoCacheStrategy implements CleanCacheStrategyInterface
             }
         }
 
-        $this->eventManager->dispatch('blackbird_image_cache_clean_after', ['paths' => $paths]);
+        $this->eventManager->dispatch('blackbird_image_cache_clean_after', ['paths' => $paths, 'product' => $product]);
     }
 }
 
